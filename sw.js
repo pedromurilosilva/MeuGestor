@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gestor-v1.0.3';
+const CACHE_NAME = 'gestor-v1.0.2';
 const ASSETS = [
     './',
     './index.html',
@@ -9,13 +9,11 @@ const ASSETS = [
     'https://cdn.jsdelivr.net/npm/chart.js'
   ];
 
-
 self.addEventListener('install', (e) => {
     e.waitUntil(
           caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
         );
 });
-
 
 self.addEventListener('activate', (e) => {
     e.waitUntil(
@@ -24,7 +22,6 @@ self.addEventListener('activate', (e) => {
                 ))
         );
 });
-
 
 self.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
@@ -37,3 +34,4 @@ self.addEventListener('fetch', (e) => {
                   return res || fetch(e.request);
           })
         );
+});
