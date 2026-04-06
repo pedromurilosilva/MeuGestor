@@ -1,0 +1,6 @@
+.DS_Store
+backup_2026_04_05/
+transactions_reset.js
+node_modules/
+.env
+.antigravity/
