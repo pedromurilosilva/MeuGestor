@@ -203,25 +203,23 @@ async function initUserData(uid) {
 
     // Escuta em tempo real para sincronização entre dispositivos
     onSnapshot(userRef, (snapshot) => {
-        const data = snapshot.data();
-        if (data) {
-            transactions = data.transactions || [];
-            
-            // Lógica de Cura Automática: Se estiver vazio, usa o padrão
-            if (!data.categories || data.categories.length === 0) {
-                console.log("Detectado: Categorias vazias. Aplicando padrões...");
-                categories = [...defaultCategories];
-                subcategories = [...defaultSubcategories];
-                syncData(); // Salva os padrões no Firestore do usuário
-            } else {
-                categories = data.categories;
-                subcategories = data.subcategories || [];
-            }
-            
-            cards = data.cards || [];
-            updateUI();
+    const data = snapshot.data();
+    if (data) {
+        transactions = data.transactions || [];
+        
+        if (!data.categories || data.categories.length === 0) {
+            categories = [...defaultCategories];
+            subcategories = [...defaultSubcategories];
+            syncData();
+        } else {
+            categories = data.categories;
+            subcategories = data.subcategories || [];
         }
-    });
+        
+        cards = data.cards || [];
+        updateUI();
+    }
+});
 }
 
 const defaultCategories = [
