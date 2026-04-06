@@ -1726,3 +1726,16 @@ const initDragAndDrop = () => {
 
 initDragAndDrop();
 updateUI();
+
+
+window.DEBUG_APP = {
+        get categories() { return categories; },
+        set categories(v) { categories = v; },
+        get subcategories() { return subcategories; },
+        set subcategories(v) { subcategories = v; },
+        get defaultCategories() { return defaultCategories; },
+        get defaultSubcategories() { return defaultSubcategories; },
+        syncData: () => syncData(),
+        renderCategoriesList: () => renderCategoriesList(),
+        updateCategorySelect: () => updateCategorySelect()
+};
