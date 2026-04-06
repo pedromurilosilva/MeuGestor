@@ -149,11 +149,7 @@ onAuthStateChanged(auth, async (user) => {
         await initUserData(user.uid);
         registerServiceWorker();
 
-        // Configura botão de Logout
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.onclick = () => auth.signOut().then(() => location.reload());
-        }
+        // Limpeza de UI caso necessário antes de initUserData
     } else {
         currentUser = null;
         transactions = [];
@@ -164,6 +160,20 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('app-container').style.display = 'none';
     }
 });
+
+// Função Global de Logout (disponível para index.html)
+window.handleLogout = async () => {
+    if (confirm("Deseja realmente sair da sua conta?")) {
+        try {
+            await auth.signOut();
+            console.log("Usuário deslogado com sucesso.");
+            // O onAuthStateChanged cuidará de ocultar o app e mostrar o login
+        } catch (err) {
+            console.error("Erro ao deslogar:", err);
+            alert("Erro ao sair: " + err.message);
+        }
+    }
+};
 
 // Inicialização de Dados por Usuário
 async function initUserData(uid) {

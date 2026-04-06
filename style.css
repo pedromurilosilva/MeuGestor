@@ -100,6 +100,20 @@ body {
     border-bottom-color: var(--blue-600);
 }
 
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 0.5rem !important;
+    color: var(--red-500) !important;
+}
+
+.logout-btn:hover {
+    background-color: var(--red-50);
+}
+
 /* Header Spacer */
 .header {
     display: grid;
