@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, getRedirectResult, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
-alert("SISTEMA ATUALIZADO (v4)");
-console.log("DEBUG: Iniciando app.js v4...");
+alert("SISTEMA ATUALIZADO (v5)");
+console.log("DEBUG: Iniciando app.js v5...");
+console.log("URL Atual:", window.location.href);
 
 // 1. Verificação de Protocolo (Diagnóstico)
 if (location.protocol === 'file:') {
@@ -111,33 +112,29 @@ console.log("2. Verificando botão de login...");
 const loginBtn = document.getElementById('google-login-btn');
 if (loginBtn) {
     console.log("3. Botão de login encontrado.");
-    loginBtn.onclick = () => {
+    loginBtn.onclick = async () => {
         console.log("Ação: Clicou no botão de Login.");
-        signInWithRedirect(auth, provider).catch(err => {
-            console.error("Erro no redirecionamento:", err);
-            alert("Erro ao iniciar login: " + err.message);
-        });
+        try {
+            await signInWithPopup(auth, provider);
+            console.log("Login com Google iniciado!");
+        } catch (err) {
+            console.error("ERRO no login Google:", err.code, err.message);
+            if (err.code === 'auth/operation-not-allowed') {
+                alert("ERRO: O provedor Google não está ativado no seu Console do Firebase. Vá em 'Authentication > Sign-in method' e ative-o.");
+            } else if (err.code === 'auth/unauthorized-domain') {
+                alert("ERRO: Este domínio não está autorizado no Console do Firebase. Vá em 'Authentication > Settings > Authorized domains' e adicione o endereço que aparece no seu navegador.");
+            } else if (err.code === 'auth/popup-blocked') {
+                alert("O seu navegador bloqueou o pop-up. Por favor, permita pop-ups para fazer login.");
+            } else {
+                alert("Erro no login Google: " + err.message + "\nCódigo: " + err.code);
+            }
+        }
     };
 } else {
     console.warn("AVISO: Botão 'google-login-btn' não encontrado no DOM.");
 }
 
-// Captura resultado do redirecionamento (Pós-login)
-console.log("4. Aguardando resultado de redirecionamento (caso tenha acabado de voltar do Google)...");
-getRedirectResult(auth).then((result) => {
-    if (result) {
-        console.log("5. Sucesso no redirecionamento! Usuário:", result.user.email);
-    }
-}).catch(err => {
-    console.error("ERRO no retorno do login:", err);
-    if (err.code === 'auth/operation-not-allowed') {
-        alert("ERRO: O provedor Google não está ativado no seu Console do Firebase. Vá em 'Authentication > Sign-in method' e ative-o.");
-    } else if (err.code === 'auth/unauthorized-domain') {
-        alert("ERRO: Este domínio não está autorizado no Console do Firebase. Vá em 'Authentication > Settings > Authorized domains' e adicione o endereço que aparece no seu navegador.");
-    } else {
-        alert("Erro no login: " + err.message + "\nCódigo: " + err.code);
-    }
-});
+console.log("4. Login por Redirecionamento desativado (usando modo Popup).");
 
 console.log("6. Registrando observador de estado (onAuthStateChanged)...");
 onAuthStateChanged(auth, async (user) => {
