@@ -181,6 +181,23 @@ if (logoutBtn) {
 }
 window.handleLogout = () => { if(logoutBtn) logoutBtn.click(); };
 
+// Função para Restaurar Padrões Forçadamente
+window.resetToDefaults = async () => {
+    if (confirm("Isso vai apagar suas categorias/subcategorias ATUAIS e voltar para as originais. Suas transações NÃO serão apagadas. Confirmar?")) {
+        try {
+            categories = [...defaultCategories];
+            subcategories = [...defaultSubcategories];
+            await syncData();
+            alert("Categorias originais restauradas com sucesso!");
+            renderCategoriesList();
+            updateCategorySelect();
+        } catch (err) {
+            console.error("Erro ao resetar categorias:", err);
+            alert("Erro ao restaurar: " + err.message);
+        }
+    }
+};
+
 // Inicialização de Dados por Usuário
 async function initUserData(uid) {
     const userRef = doc(db, "users", uid);
@@ -220,20 +237,42 @@ const defaultCategories = [
     { id: 'c3', name: 'Moradia', type: 'expense', icon: 'home' },
     { id: 'c4', name: 'Alimentação', type: 'expense', icon: 'shopping-cart' },
     { id: 'c5', name: 'Transporte', type: 'expense', icon: 'car' },
-    { id: 'c6', name: 'Lazer', type: 'expense', icon: 'coffee' }
+    { id: 'c6', name: 'Lazer', type: 'expense', icon: 'coffee' },
+    { id: 'c7', name: 'Saúde', type: 'expense', icon: 'heart' },
+    { id: 'c8', name: 'Educação', type: 'expense', icon: 'book' },
+    { id: 'c9', name: 'Tarifas', type: 'expense', icon: 'zap' },
+    { id: 'c10', name: 'Freelance', type: 'income', icon: 'dollar-sign' },
+    { id: 'c11', name: 'Venda de Produtos', type: 'income', icon: 'shopping-bag' },
+    { id: 'c12', name: 'Serviços', type: 'income', icon: 'tool' },
+    { id: 'c13', name: 'Marketing', type: 'expense', icon: 'zap' },
+    { id: 'c14', name: 'Logística', type: 'expense', icon: 'truck' }
 ];
 
 const defaultSubcategories = [
     { id: 's1', name: 'Aluguel', categoryId: 'c3' },
     { id: 's2', name: 'Condomínio', categoryId: 'c3' },
+    { id: 's11', name: 'Energia', categoryId: 'c3' },
+    { id: 's12', name: 'Água', categoryId: 'c3' },
+    { id: 's13', name: 'Internet', categoryId: 'c3' },
     { id: 's3', name: 'Supermercado', categoryId: 'c4' },
     { id: 's4', name: 'Lanches/Ifood', categoryId: 'c4' },
+    { id: 's14', name: 'Feira/Hortifruti', categoryId: 'c4' },
     { id: 's5', name: 'Combustível', categoryId: 'c5' },
     { id: 's6', name: 'Manutenção', categoryId: 'c5' },
+    { id: 's15', name: 'Uber/Táxi', categoryId: 'c5' },
     { id: 's7', name: 'Restaurante', categoryId: 'c6' },
     { id: 's8', name: 'Cinema/Streaming', categoryId: 'c6' },
+    { id: 's16', name: 'Viagens', categoryId: 'c6' },
     { id: 's9', name: 'Vendas Diretas', categoryId: 'c1' },
-    { id: 's10', name: 'Dividendos', categoryId: 'c2' }
+    { id: 's17', name: 'Bônus', categoryId: 'c1' },
+    { id: 's10', name: 'Dividendos', categoryId: 'c2' },
+    { id: 's18', name: 'Farmácia', categoryId: 'c7' },
+    { id: 's19', name: 'Consultas', categoryId: 'c7' },
+    { id: 's20', name: 'Cursos/Pós', categoryId: 'c8' },
+    { id: 's21', name: 'Livros', categoryId: 'c8' },
+    { id: 's22', name: 'Tarifa Bancária', categoryId: 'c9' },
+    { id: 's23', name: 'Impostos', categoryId: 'c9' },
+    { id: 's24', name: 'Projetos Freelance', categoryId: 'c10' }
 ];
 
 // Função auxiliadora para salvar no Firestore
