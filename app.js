@@ -2,7 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
-alert("SISTEMA ATUALIZADO (v5)");
+alert("SISTEMA ATUALIZADO (v6)");
+console.log("Versão: 6");
 console.log("DEBUG: Iniciando app.js v5...");
 console.log("URL Atual:", window.location.href);
 
@@ -162,18 +163,23 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // Função Global de Logout (disponível para index.html)
-window.handleLogout = async () => {
-    if (confirm("Deseja realmente sair da sua conta?")) {
-        try {
-            await auth.signOut();
-            console.log("Usuário deslogado com sucesso.");
-            // O onAuthStateChanged cuidará de ocultar o app e mostrar o login
-        } catch (err) {
-            console.error("Erro ao deslogar:", err);
-            alert("Erro ao sair: " + err.message);
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', async (e) => {
+        console.log("Ação: Clicou em sair.");
+        // Se o clique veio por código, não mostre confirm (opcional)
+        if (confirm("Deseja realmente sair da sua conta?")) {
+            try {
+                await auth.signOut();
+                console.log("Usuário deslogado com sucesso.");
+            } catch (err) {
+                console.error("Erro ao deslogar:", err);
+                alert("Erro ao sair: " + err.message);
+            }
         }
-    }
-};
+    });
+}
+window.handleLogout = () => { if(logoutBtn) logoutBtn.click(); };
 
 // Inicialização de Dados por Usuário
 async function initUserData(uid) {
