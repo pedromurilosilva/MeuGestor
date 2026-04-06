@@ -30,7 +30,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="app.js?v=6"></script>
+    <script type="module" src="app.js?v=1.0.0"></script>
 </head>
 <body>
     <!-- TELA DE LOGIN / AUTH -->
@@ -253,16 +253,11 @@
         <!-- VIEW: CATEGORIES -->
         <div id="view-categories" class="app-view" style="display: none;">
             <main class="main-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2 style="font-size: 1.25rem; font-weight: 600;">Suas Categorias</h2>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn-mini" onclick="resetToDefaults()" title="Restaurar originais" style="background-color: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); padding: 8px 16px; font-size: 0.8rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                            <i data-lucide="refresh-cw" width="14"></i> Restaurar Originais
-                        </button>
-                        <button class="btn-primary" onclick="openCategoryModal()" style="width: auto; padding: 0.5rem 1rem;">
-                            <i data-lucide="plus"></i> Nova Categoria
-                        </button>
-                    </div>
+                    <button class="btn-primary" onclick="openCategoryModal()" style="width: auto; padding: 0.5rem 1rem;">
+                        <i data-lucide="plus"></i> Nova Categoria
+                    </button>
                 </div>
                 
                 <div class="categories-grid">

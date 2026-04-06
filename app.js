@@ -2,9 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
-alert("SISTEMA ATUALIZADO (v6)");
-console.log("Versão: 6");
-console.log("DEBUG: Iniciando app.js v5...");
+alert("SISTEMA ATUALIZADO (v1.0.0)");
+console.log("Versão: 1.0.0");
+console.log("DEBUG: Iniciando app.js v1.0.0...");
 console.log("URL Atual:", window.location.href);
 
 // 1. Verificação de Protocolo (Diagnóstico)
@@ -180,23 +180,6 @@ if (logoutBtn) {
     });
 }
 window.handleLogout = () => { if(logoutBtn) logoutBtn.click(); };
-
-// Função para Restaurar Padrões Forçadamente
-window.resetToDefaults = async () => {
-    if (confirm("Isso vai apagar suas categorias/subcategorias ATUAIS e voltar para as originais. Suas transações NÃO serão apagadas. Confirmar?")) {
-        try {
-            categories = [...defaultCategories];
-            subcategories = [...defaultSubcategories];
-            await syncData();
-            alert("Categorias originais restauradas com sucesso!");
-            renderCategoriesList();
-            updateCategorySelect();
-        } catch (err) {
-            console.error("Erro ao resetar categorias:", err);
-            alert("Erro ao restaurar: " + err.message);
-        }
-    }
-};
 
 // Inicialização de Dados por Usuário
 async function initUserData(uid) {
