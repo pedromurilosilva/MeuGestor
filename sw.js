@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gestor-v1';
+const CACHE_NAME = 'gestor-v1.0.2';
 const ASSETS = [
   './',
   './index.html',
@@ -16,6 +16,13 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Para arquivos core (app.js, index.html), tentamos rede primeiro ou ignoramos cache nesta v1.0.2
+  const url = new URL(e.request.url);
+  if (url.pathname.includes('app.js')) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((res) => {
       return res || fetch(e.request);

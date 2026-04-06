@@ -2,9 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
-alert("SISTEMA ATUALIZADO (v1.0.0)");
-console.log("Versão: 1.0.0");
-console.log("DEBUG: Iniciando app.js v1.0.0...");
+alert("SISTEMA ATUALIZADO (v1.0.2)");
+console.log("Versão: 1.0.2");
+console.log("DEBUG: Iniciando app.js v1.0.2...");
 console.log("URL Atual:", window.location.href);
 
 // 1. Verificação de Protocolo (Diagnóstico)
@@ -206,8 +206,18 @@ async function initUserData(uid) {
         const data = snapshot.data();
         if (data) {
             transactions = data.transactions || [];
-            categories = data.categories || [];
-            subcategories = data.subcategories || [];
+            
+            // Lógica de Cura Automática: Se estiver vazio, usa o padrão
+            if (!data.categories || data.categories.length === 0) {
+                console.log("Detectado: Categorias vazias. Aplicando padrões...");
+                categories = [...defaultCategories];
+                subcategories = [...defaultSubcategories];
+                syncData(); // Salva os padrões no Firestore do usuário
+            } else {
+                categories = data.categories;
+                subcategories = data.subcategories || [];
+            }
+            
             cards = data.cards || [];
             updateUI();
         }
@@ -850,6 +860,8 @@ const updateUI = () => {
         transactionsList.appendChild(item);
     });
 
+    updateCategorySelect();
+    renderCategoriesList();
     lucide.createIcons();
     if (document.getElementById('view-reports').style.display === 'block') updateReports();
 };
